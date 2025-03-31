@@ -35,10 +35,10 @@ pip install opencv-python pandas numpy tkinter
 
 3. **Select CSV File**:
    - Another file dialog will appear to allow you to select a CSV file containing the expected measurements, corresponding image IDs and a scaling factor.
-   - The CSV file must have columns: `ID`, `LENGTH`, `MIN_WIDTH`, `MAX_WIDTH`. 'LENGTH' will be used as the scaling factor.
+   - The CSV file must have columns: `ID`, `LENGTH`, `MIN_WIDTH`, and `MAX_WIDTH`. 'LENGTH' will be used as the scaling factor.
 
 4. **Measurement, Debug and Results**:
-   - The script will ask to select a threshold in order to correctly outline he object.
+   - The script will ask to select a threshold to correctly outline the object.
    - After selection, the script will ask to confirm the selected threshold. If not confirmed, it will be possible to change the threshold value.
    - The script will then process the image, measuring its width based on the contours found and comparing it to the values in the CSV file.
    - The process is repeated for each image.
