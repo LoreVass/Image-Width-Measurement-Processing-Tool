@@ -45,9 +45,17 @@ pip install opencv-python pandas numpy tkinter
    - After processing, the results will be saved in an Excel file named `output_measurements.xlsx` on your desktop.
 
 5. **Review Results**:
-   - The output Excel file will contain columns for the measured widths, expected widths, and errors.
-
-## Example CSV Format
+   - The output Excel file will contain the following columns for the measured widths, expected widths, and errors.
+- `Max_Width`: Maximum width measured.
+- `Min_Width`: Minimum width measured. 
+- `Mean_Width`: Total of measured widths divided by the number of measurements.
+- `Width_Ratio`: Mean width divided by total length.
+- `Coefficient_of_Variation (%)`: Standard deviation divided by mean width. The result is multiplied by 100 to obtain the percentage.
+- `Expected_Min_Width`: Minimum width in the input file.
+- `Expected_Max_Width`: Maximum width in the input file
+- `Min_Width_Error`: Difference between Min_Width and Expected_Min_Width
+- `Max_Width_Error`: Difference between Max_Width and Expected_Max_Width
+  
 ```csv
 ID,LENGTH,MIN_WIDTH,MAX_WIDTH
 image1.jpg,150,10,50
