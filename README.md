@@ -19,9 +19,9 @@ This project provides a Python-based tool for processing images and measuring th
 
 You can install the required libraries using `pip`:
 
-bash:
+```bash
 pip install opencv-python pandas numpy tkinter
-
+```
 
 ## How to Use
 
@@ -48,12 +48,11 @@ pip install opencv-python pandas numpy tkinter
    - The output Excel file will contain columns for the measured widths, expected widths, and errors.
 
 ## Example CSV Format
-'''csv
+```csv
 ID,LENGTH,MIN_WIDTH,MAX_WIDTH
 image1.jpg,150,10,50
 image2.jpg,200,15,60
-...
-'''
+```
 
 - `ID`: The image filename (e.g., `image1.jpg`).
 - `LENGTH`: Known length in millimeters of the object in the image ---> Used as scaling factor.
