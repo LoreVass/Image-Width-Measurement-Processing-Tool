@@ -1,72 +1,150 @@
-# Image Width Measurement Processing Tool
+Image Width Measurement Processing Tool
 
-## Overview
-This project provides a Python-based tool for processing images and measuring the width of irregular 2D objects images. The script was written for a research project focused on duck bills, hence the irregular shape. The tool uses the OpenCV library to analyse and process image files, comparing the measurements to predefined expected values from a CSV file. The processed results are then saved in an Excel file for further analysis. The correct measurements are only possible if scaling, the total length of the image in mm, is provided.
+This repository provides a Python tool for automated width measurement of objects in images using OpenCV.
+It was originally developed for biological morphometrics but is fully generalizable to any elongated or irregular shape.
 
-## Features
-- File Selection: Selects image folder and CSV file through a user-friendly file dialog.
-- Measurement Function: Measures the width of objects in images using contours and thresholds and computes statistics such as mean width, coefficient of variation, and width ratios.
-- Output: Results are saved in an Excel file on the user's desktop.
-- Error Checking: Handles missing or invalid images, skipping processing for these files. Moreover, it enables the user to select the correct threshold to define the shape outline.
+Overview
 
-## Requirements
-- Python 3.x
-- Required libraries:
-  - OpenCV (`cv2`): For image processing and measurement.
-  - Pandas (`pd`): For handling CSV and Excel data.
-  - Numpy (`np`): For numerical operations.
-  - Tkinter (`tk`): For graphical file dialogs.
+The tool measures object width along its entire length by:
 
-You can install the required libraries using `pip`:
+Segmenting the object using adaptive thresholding and morphological cleanup.
 
-```bash
-pip install opencv-python pandas numpy tkinter
-```
+Automatically aligning the main axis horizontally.
 
-## How to Use
+Measuring vertical thickness at every x-coordinate.
 
-1. **Run the Script**:
-   - Ensure that your Python environment has the required libraries installed.
-   
+Converting pixel values to millimeters using a known reference length.
 
-2. **Select Image Folder**:
-   - A file dialog will appear asking you to select the folder containing the images you want to process.
-   - The script will process all images in the folder.
+Computing summary statistics:
 
-3. **Select CSV File**:
-   - Another file dialog will appear to allow you to select a CSV file containing the expected measurements, corresponding image IDs and a scaling factor.
-   - The CSV file must have columns: `ID`, `LENGTH`, `MIN_WIDTH`, and `MAX_WIDTH`. 'LENGTH' will be used as the scaling factor.
+Minimum width
 
-4. **Measurement, Debug and Results**:
-   - The script will ask to select a threshold to correctly outline the object.
-   - After selection, the script will ask to confirm the selected threshold. If not confirmed, it will be possible to change the threshold value.
-   - The script will then process the image, measuring its width based on the contours found and comparing it to the values in the CSV file.
-   - The process is repeated for each image.
-   - After processing, the results will be saved in an Excel file named `output_measurements.xlsx` on your desktop.
+Maximum width
 
-5. **Review Results**:
-   - The output Excel file will contain the following columns for the measured widths, expected widths, and errors.
-- `Max_Width`: Maximum width measured.
-- `Min_Width`: Minimum width measured. 
-- `Mean_Width`: Total of measured widths divided by the number of measurements.
-- `Width_Ratio`: Mean width divided by total length.
-- `Coefficient_of_Variation (%)`: Standard deviation divided by mean width. The result is multiplied by 100 to obtain the percentage.
-- `Expected_Min_Width`: Minimum width in the input file.
-- `Expected_Max_Width`: Maximum width in the input file
-- `Min_Width_Error`: Difference between Min_Width and Expected_Min_Width
-- `Max_Width_Error`: Difference between Max_Width and Expected_Max_Width
-  
-```csv
+Mean width
+
+Width ratio (mean width / total length)
+
+Coefficient of variation (CV)
+
+The output is saved as an Excel file on the user’s Desktop.
+
+Features
+
+Fully automated width measurement along the entire object.
+
+Robust segmentation for real images (handles uneven lighting, reflections, noise).
+
+CLAHE contrast normalization and Gaussian denoising.
+
+Morphological filtering to remove speckles and fill small gaps.
+
+Automatic orientation correction using minAreaRect.
+
+Supports both black and white backgrounds.
+
+Batch processing via CSV input.
+
+Excel output containing all width statistics.
+
+Validation with synthetic shapes (rectangles, ellipses, polygons).
+
+Input Requirements
+
+The program requires a CSV file with the following columns:
+
+ID: Image filename
+
+LENGTH: Known object length in millimeters
+
+MIN_WIDTH: Minimum expected width (used as a filter)
+
+MAX_WIDTH: Maximum expected width (reference only)
+
+Example
+
 ID,LENGTH,MIN_WIDTH,MAX_WIDTH
-image1.jpg,150,10,50
-image2.jpg,200,15,60
-```
+sample1.jpg,300,0,300
+sample2.jpg,150,0,150
 
-- `ID`: The image filename (e.g., `image1.jpg`).
-- `LENGTH`: Known length in millimeters of the object in the image ---> Used as scaling factor.
-- `MIN_WIDTH`: Expected minimum width of the object in millimeters ---> Used to limit measurements to avoid errors.
-- `MAX_WIDTH`: Expected maximum width of the object in millimeters ---> If available, used as comparison.
+Images must be located inside the folder selected at runtime.
 
-## Notes
-- Error Handling: If any image or CSV file is not found or is not processed correctly, it will be skipped, and a message will be printed to the console.
-- The tool is intended for use with images where the object is clearly distinguishable from the background.
+Output
+
+The program produces an Excel file containing:
+
+Image ID
+
+Minimum width (mm)
+
+Maximum width (mm)
+
+Mean width (mm)
+
+Width ratio
+
+Coefficient of variation (%)
+
+Expected minimum width
+
+Expected maximum width
+
+Error values compared to expected widths
+
+Output is automatically saved to:
+
+~/Desktop/output_measurements.xlsx
+
+Installation
+
+Install required dependencies:
+
+pip install opencv-python pandas numpy xlsxwriter
+
+Usage
+
+Run the script:
+
+python main.py
+
+
+Follow the prompts to:
+
+Specify whether the background is black.
+
+Select the image folder.
+
+Select the CSV file.
+
+The script will process every image and generate the Excel output.
+
+Validation
+
+The tool has been validated using synthetic shapes such as:
+
+Rectangles (constant width)
+
+Ellipses
+
+Trapezoids
+
+Triangles
+
+Cross shapes
+
+Star shapes
+
+Fish-like polygons
+
+These tests confirm that width measurement and CV behave consistently with geometric expectations.
+
+Project Structure
+Image-Width-Measurement-Processing-Tool/
+├── main.py
+├── README.md
+├── example.csv
+└── Test_shapes/
+
+License
+
+Released under the MIT License.
